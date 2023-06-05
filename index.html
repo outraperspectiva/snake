@@ -27,13 +27,13 @@
       //cria me frequência de carregamento da tela com a função game
       setInterval(game,1000/15);
     }
-
-  //define tamanho de cada quadrado, posição inicial dos objetos (apple e snake), array para o rastro
-      gs=tc=20;
-      sx=sy=10;
+  
+      gs=20; //tamanho de cada quadrado
+      tc=20; // contador de trajeto
+      sx=sy=10;  //posição inicial (x,y) dos objetos (apple e snake)
       ax=ay=15;
-      tail = 5;
-      trail=[];
+      tail = 5;  //tamanho da cauda e 
+      trail=[];  //array para o rastro
 
    //variável que recebe a direção pressionada no teclado
       xv=yv=0;
