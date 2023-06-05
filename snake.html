@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Snake Game</title>
+  </head>
+
+<!– defininção do tamanho da tela->
+<canvas id="gc" width="400" height="400"></canvas>
+
+<body>
+
+<!–comandos javascript no lado do navegador (client-side) ao carregar a tela->
+<script>
+    window.onload=function() {
+      lives = 5;
+      //cria uma tela onde podem ser criados desenhos 2d
+      //https://www.w3schools.com/html/html5_canvas.asp
+      canv=document.getElementById("gc");
+      ctx=canv.getContext("2d");
+
+      //o método insere um manipulador de eventos (keydown) à página
+      document.addEventListener("keydown",keyPush);
+
+      //o método chama uma função em intervalos especificados
+      //cria me frequência de carregamento da tela com a função game
+      setInterval(game,1000/15);
+    }
+
+  //define tamanho de cada quadrado, posição inicial dos objetos (apple e snake), array para o rastro
+      gs=tc=20;
+      sx=sy=10;
+      ax=ay=15;
+      tail = 5;
+      trail=[];
+
+   //variável que recebe a direção pressionada no teclado
+      xv=yv=0;
+
+ function keyPush(evt) {
+   //cada vez que uma das teclas abaixo é pressionada atribui um valor para posição x e y
+        switch(evt.keyCode) {
+           case 37:
+             xv=-1;yv=0;
+             break;
+           case 38:
+             xv=0;yv=-1;
+             break;
+           case 39:
+             xv=1;yv=0;
+             break;
+           case 40:
+             xv=0;yv=1;
+             break;
+        }
+  }
+
+ function game() {
+   //Atribuição de adição px=px+xv e py=py+yv
+      sx+=xv;
+      sy+=yv;
+
+  //atribui um valor da nova direção para o snake conforme tecla pressionada na função KeyPush()
+      if(sx<0) {
+       sx= tc-1;
+      }
+      if(sx>tc-1) {
+       sx= 0;
+      }
+      if(sy<0) {
+       sy= tc-1;
+      }
+      if(sy>tc-1) {
+       sy= 0;
+      }
+
+   //Define a cor de preenchimento preto
+      ctx.fillStyle="black";
+
+   //preenche o espaço do canva de preto
+   // https://developer.mozilla.org/pt-BR/docs/Web/API/CanvasRenderingContext2D/fillRect
+      ctx.fillRect(0,0,canv.width,canv.height);
+
+   //Define a cor de preenchimento verde
+      ctx.fillStyle="lime";
+
+     for(var i=0;i<trail.length;i++) {
+   //preenche um quadrado verde de tamanho na posição do canva
+        ctx.fillRect(trail[i].x*gs,trail[i].y*gs,gs-2,gs-2);
+
+   //se o snake passa por ele mesmo resseta o tamanho da cauda
+        if(trail[i].x==sx && trail[i].y==sy) {
+          tail = 5;
+        }
+      }
+
+      trail.push({x:sx,y:sy});
+
+      while(trail.length>tail) {
+        trail.shift();
+      }
+
+    //se snake passar em cima da apple aumenta um quadrado da cauda e
+    //sorteia novo local para aparecer uma apple
+      if(ax==sx && ay==sy) {
+         tail++;
+         ax=Math.floor(Math.random()*tc);
+         ay=Math.floor(Math.random()*tc);
+      }
+        ctx.fillStyle="red";
+        ctx.fillRect(ax*gs,ay*gs,gs-2,gs-2);
+ }
+
+</script>
+</body>
+</html>
